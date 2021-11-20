@@ -27,9 +27,21 @@ const App = () => {
     setNotes([...notes, {id:nanoid(), text:text, date: date.toLocaleDateString()}]);
   }
 
+  const deleteNote = (id) => {
+    //console.log(`note with id of ${id} will be deleted`);
+    const newNoteList = [];
+    notes.map((note) => {
+      if(note.id !== id){
+        newNoteList.push(note);
+      }
+    });
+    console.log(newNoteList);
+    setNotes(newNoteList);
+  }  
+
   return (
     <div className="container">
-      <NotesList notes={notes} handleAddNote={addNote}/>
+      <NotesList notes={notes} handleAddNote={addNote} handleDeleteNote={deleteNote}/>
     </div>
       )
 };
