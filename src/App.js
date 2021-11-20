@@ -6,38 +6,30 @@ import Header from "./components/Header";
 
 const App = () => {
 
-  const[notes, setNotes] = useState([{
-    id:nanoid(),
-    text:"This is the first note!",
-    date: "10/10/2021"
-  },{
-    id:nanoid(),
-    text:"This is the second note!",
-    date: "10/11/2021"
-  },{
-    id:nanoid(),
-    text:"This is the third note!",
-    date: "10/12/2021"
-  },{
-    id:nanoid(),
-    text:"This is the fourth note!",
-    date: "10/13/2021"
-  }]);
+  const[notes, setNotes] = useState([]);
 
   const [searchText, setSearchText] = useState('');
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(()=>{
     const savedNotes = JSON.parse(localStorage.getItem('react-notes-app-data'));
+    const storedDarkMode = JSON.parse(localStorage.getItem('react-notes-app-dark-mode'));
+    if(storedDarkMode){
+      setDarkMode(storedDarkMode);
+      console.log(`darkMode ${darkMode} storedDarkMode ${storedDarkMode}`);
+    }
     if(savedNotes){
       setNotes(savedNotes);
     }
-    
   },[])
 
   useEffect(() => {
     localStorage.setItem('react-notes-app-data', JSON.stringify(notes))
   },[notes])
+
+  useEffect(()=>{
+    localStorage.setItem('react-notes-app-dark-mode', JSON.stringify(darkMode));
+  },[darkMode])
 
   const addNote = (text) => {
     const date = new Date();
@@ -57,7 +49,8 @@ const App = () => {
   }  
 
   return (
-    <div className={`${darkMode && 'dark-mode'}`}>
+    //<div className={`${darkMode && 'dark-mode'}`}>
+    <div className={darkMode ? 'dark-mode' : 'light-mode'}>
       <div className="container">
         <Header handleToggleDarkMode={setDarkMode}/>
         <Search handleSearchNote={setSearchText}/>
